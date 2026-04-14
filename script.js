@@ -38,7 +38,20 @@ card.innerHTML = `
 /* ============================= */
 /* 🎠 CARROSSEL */
 /* ============================= */
-const imagens = ["🦕", "🌿", "🦖"];
+const imagens = [
+  {
+    src: "https://upload.wikimedia.org/wikipedia/commons/3/3c/Ankylosaurus_magniventris_%28life_restoration%29.png",
+    alt: "Anquilossauro ilustrado"
+  },
+  {
+    src: "https://upload.wikimedia.org/wikipedia/commons/0/0e/Euoplocephalus_restoration.jpg",
+    alt: "Euoplocephalus"
+  },
+  {
+    src: "https://upload.wikimedia.org/wikipedia/commons/5/5f/Saichania_chulsanensis.jpg",
+    alt: "Saichania"
+  }
+];
 const track = document.getElementById("carousel-track");
 
 imagens.forEach(img => {
