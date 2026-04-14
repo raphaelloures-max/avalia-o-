@@ -36,6 +36,16 @@ body {
   color: var(--color-text);
   line-height: 1.6;
 }
+/* ============================= */
+/* 🖼️ IMAGENS DOS CARDS */
+/* ============================= */
+.card-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  margin-bottom: 10px;
+}
 
 /* ============================= */
 /* HEADER */
