@@ -1,1 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anquilossauros</title>
 
+  <!-- Acessibilidade -->
+  <meta name="description" content="Descubra os anquilossauros, dinossauros blindados do período Cretáceo.">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header role="banner" class="header">
+    <h1>Anquilossauros 🦕</h1>
+
+    <nav aria-label="Menu principal">
+      <ul class="nav">
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#tipos">Tipos</a></li>
+        <li><a href="#galeria">Galeria</a></li>
+      </ul>
+    </nav>
+
+    <!-- CONTROLES DE ACESSIBILIDADE -->
+    <div class="accessibility-controls">
+      <button id="increase-font" aria-label="Aumentar fonte">A+</button>
+      <button id="decrease-font" aria-label="Diminuir fonte">A-</button>
+      <button id="contrast-toggle" aria-label="Alternar alto contraste">Contraste</button>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main role="main">
+
+    <!-- SOBRE -->
+    <section id="sobre" class="section reveal">
+      <h2>O que são Anquilossauros?</h2>
+      <p>
+        Os anquilossauros eram dinossauros herbívoros conhecidos por sua armadura corporal e cauda em forma de clava.
+      </p>
+    </section>
+
+    <!-- TABS -->
+    <section class="section reveal">
+      <h2>Características</h2>
+
+      <div class="tabs" role="tablist">
+        <button role="tab" class="tab active" data-tab="defesa">Defesa</button>
+        <button role="tab" class="tab" data-tab="alimentacao">Alimentação</button>
+        <button role="tab" class="tab" data-tab="habitat">Habitat</button>
+      </div>
+
+      <div class="tab-content active" id="defesa">
+        <p>Possuíam placas ósseas e cauda em forma de clava para defesa.</p>
+      </div>
+
+      <div class="tab-content" id="alimentacao">
+        <p>Herbívoros que se alimentavam de plantas rasteiras.</p>
+      </div>
+
+      <div class="tab-content" id="habitat">
+        <p>Viviam principalmente em regiões da América do Norte e Ásia.</p>
+      </div>
+    </section>
+
+    <!-- TIPOS (DINÂMICO) -->
+    <section id="tipos" class="section reveal">
+      <h2>Tipos de Anquilossauros</h2>
+      <div id="cards-container" class="grid"></div>
+    </section>
+
+    <!-- CARROSSEL -->
+    <section id="galeria" class="section reveal">
+      <h2>Galeria</h2>
+
+      <div class="carousel" aria-label="Galeria de imagens">
+        <button class="carousel-btn prev">◀</button>
+        <div class="carousel-track" id="carousel-track"></div>
+        <button class="carousel-btn next">▶</button>
+      </div>
+    </section>
+
+    <!-- ACCORDION -->
+    <section class="section reveal">
+      <h2>Curiosidades</h2>
+
+      <div class="accordion">
+        <button class="accordion-header">Eles eram lentos?</button>
+        <div class="accordion-content">
+          <p>Sim, eram relativamente lentos devido à sua armadura pesada.</p>
+        </div>
+
+        <button class="accordion-header">Tinham predadores?</button>
+        <div class="accordion-content">
+          <p>Sim, mas sua defesa era extremamente eficiente.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer role="contentinfo" class="footer">
+    <p>© 2026 - Projeto Educacional</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
