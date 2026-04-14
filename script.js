@@ -157,3 +157,13 @@ const dinos = [
     imagem: "https://upload.wikimedia.org/wikipedia/commons/5/5f/Saichania_chulsanensis.jpg"
   }
 ];
+imagens.forEach(img => {
+  const div = document.createElement("div");
+  div.classList.add("carousel-item");
+
+  div.innerHTML = `
+    <img src="${img.src}" alt="${img.alt}" class="carousel-img">
+  `;
+
+  track.appendChild(div);
+});
