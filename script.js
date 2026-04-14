@@ -25,9 +25,11 @@ dinos.forEach(dino => {
   const card = document.createElement("article");
   card.classList.add("card");
 
-  card.innerHTML = `
-    <h3>${dino.nome}</h3>
-    <p>${dino.descricao}</p>
+card.innerHTML = `
+  <img src="${dino.imagem}" alt="Imagem do ${dino.nome}" class="card-img">
+  <h3>${dino.nome}</h3>
+  <p>${dino.descricao}</p>
+`;
   `;
 
   container.appendChild(card);
@@ -125,3 +127,20 @@ function revealOnScroll() {
 }
 
 window.addEventListener("scroll", revealOnScroll);
+const dinos = [
+  {
+    nome: "Ankylosaurus",
+    descricao: "O mais famoso, com uma grande clava na cauda.",
+    imagem: "https://upload.wikimedia.org/wikipedia/commons/3/3c/Ankylosaurus_magniventris_%28life_restoration%29.png"
+  },
+  {
+    nome: "Euoplocephalus",
+    descricao: "Possuía armadura extremamente resistente.",
+    imagem: "https://upload.wikimedia.org/wikipedia/commons/0/0e/Euoplocephalus_restoration.jpg"
+  },
+  {
+    nome: "Saichania",
+    descricao: "Adaptado a ambientes áridos.",
+    imagem: "https://upload.wikimedia.org/wikipedia/commons/5/5f/Saichania_chulsanensis.jpg"
+  }
+];
