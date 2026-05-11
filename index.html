@@ -2,128 +2,283 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-  <!-- SEO -->
-  <title>Anquilossauros: Dinossauros Blindados do Cretáceo</title>
-  <meta name="description" content="Descubra os anquilossauros, dinossauros herbívoros com armadura natural e cauda em forma de clava.">
-  <meta name="keywords" content="anquilossauro, dinossauros, Ankylosaurus, Cretáceo">
-  <meta name="robots" content="index, follow">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Anquilossauros">
-  <meta property="og:description" content="Explore os dinossauros blindados mais incríveis.">
-  <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/3/3c/Ankylosaurus_magniventris_%28life_restoration%29.png">
-
-  <!-- Performance -->
-  <link rel="preconnect" href="https://upload.wikimedia.org">
-
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Entre Rios: tradição agrícola e sustentabilidade — conheça a história, cultura e práticas sustentáveis de Entre Rios, Paraná." />
+  <title>Entre Rios · Tradição & Sustentabilidade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
-<header class="header" role="banner">
-  <h1>Anquilossauros 🦕</h1>
-
-  <nav aria-label="Navegação principal">
-    <ul class="nav">
-      <li><a href="#sobre">Sobre</a></li>
-      <li><a href="#tipos">Tipos</a></li>
-      <li><a href="#galeria">Galeria</a></li>
-    </ul>
-  </nav>
-
-  <div class="accessibility-controls">
-    <button id="increase-font">A+</button>
-    <button id="decrease-font">A-</button>
-    <button id="contrast-toggle">Contraste</button>
-  </div>
-</header>
-
-<main role="main">
-
-<section id="sobre" class="section reveal">
-  <h2>O que são Anquilossauros?</h2>
-  <p>
-    Os anquilossauros eram dinossauros herbívoros do período Cretáceo.
-    Veja também os <a href="#tipos">tipos de anquilossauros</a>.
-  </p>
-</section>
-
-<!-- TABS -->
-<section class="section reveal">
-  <h2>Características</h2>
-
-  <div class="tabs" role="tablist">
-    <button class="tab active" data-tab="defesa">Defesa</button>
-    <button class="tab" data-tab="alimentacao">Alimentação</button>
-    <button class="tab" data-tab="habitat">Habitat</button>
+  <!-- ===== BARRA DE ACESSIBILIDADE ===== -->
+  <div class="a11y-bar" role="toolbar" aria-label="Ferramentas de acessibilidade">
+    <span class="a11y-label">Acessibilidade:</span>
+    <button class="a11y-btn" id="btn-increase-font" aria-label="Aumentar tamanho da fonte" title="Aumentar fonte">A+</button>
+    <button class="a11y-btn" id="btn-decrease-font" aria-label="Diminuir tamanho da fonte" title="Diminuir fonte">A−</button>
+    <button class="a11y-btn" id="btn-contrast" aria-label="Alternar alto contraste" aria-pressed="false" title="Alto contraste">◑</button>
   </div>
 
-  <div id="defesa" class="tab-content active">
-    <p>Possuíam armadura corporal e cauda em forma de clava.</p>
-  </div>
+  <!-- ===== HEADER / NAV ===== -->
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <a href="#home" class="logo" aria-label="Entre Rios — página inicial">
+        <span class="logo-mark" aria-hidden="true">ER</span>
+        <span class="logo-text">Entre Rios</span>
+      </a>
 
-  <div id="alimentacao" class="tab-content">
-    <p>Alimentavam-se de plantas rasteiras.</p>
-  </div>
+      <button class="nav-toggle" id="nav-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Abrir menu de navegação">
+        <span class="hamburger" aria-hidden="true"></span>
+      </button>
 
-  <div id="habitat" class="tab-content">
-    <p>Viviam na América do Norte e Ásia.</p>
-  </div>
-</section>
-
-<!-- CARDS DINÂMICOS -->
-<section id="tipos" class="section reveal">
-  <h2>Tipos de Anquilossauros</h2>
-  <div id="cards-container" class="grid"></div>
-</section>
-
-<!-- CARROSSEL -->
-<section id="galeria" class="section reveal">
-  <h2>Galeria</h2>
-
-  <div class="carousel" role="region" aria-label="Galeria de imagens de anquilossauros">
-    <button class="carousel-btn prev">◀</button>
-    <div id="carousel-track" class="carousel-track"></div>
-    <button class="carousel-btn next">▶</button>
-  </div>
-</section>
-
-<!-- ACCORDION -->
-<section class="section reveal">
-  <h2>Curiosidades</h2>
-
-  <div class="accordion">
-    <button class="accordion-header">Eles eram lentos?</button>
-    <div class="accordion-content">
-      <p>Sim, devido à armadura pesada.</p>
+      <nav class="main-nav" id="main-nav" role="navigation" aria-label="Navegação principal">
+        <ul class="nav-list" role="list">
+          <li><a href="#home"     class="nav-link" data-page="home">Apresentação</a></li>
+          <li><a href="#historia" class="nav-link" data-page="historia">História</a></li>
+          <li><a href="#jogo"     class="nav-link" data-page="jogo">Mini Jogo</a></li>
+          <li><a href="#autor"    class="nav-link" data-page="autor">Autor</a></li>
+        </ul>
+      </nav>
     </div>
+  </header>
 
-    <button class="accordion-header">Tinham predadores?</button>
-    <div class="accordion-content">
-      <p>Sim, mas sua defesa era eficiente.</p>
+  <main id="main-content">
+
+    <!-- ======================================================
+         PÁGINA 1 — APRESENTAÇÃO
+    ====================================================== -->
+    <section id="home" class="page page-home" aria-labelledby="home-title">
+
+      <!-- Hero -->
+      <div class="hero" role="img" aria-label="Campos agrícolas de Entre Rios ao entardecer">
+        <div class="hero-bg" aria-hidden="true"></div>
+        <div class="hero-content reveal">
+          <p class="hero-eyebrow">Guarapuava · Paraná · Brasil</p>
+          <h1 id="home-title" class="hero-title">
+            Entre<br/><em>Rios</em>
+          </h1>
+          <p class="hero-subtitle">Tradição Agrícola &amp; Sustentabilidade</p>
+          <a href="#historia" class="btn-primary">Descobrir a história</a>
+        </div>
+        <div class="hero-scroll-hint" aria-hidden="true">
+          <span>Role para baixo</span>
+          <div class="scroll-line"></div>
+        </div>
+      </div>
+
+      <!-- Intro editorial -->
+      <div class="section-intro reveal">
+        <div class="intro-grid">
+          <div class="intro-text">
+            <h2 class="section-title">Um território entre tradição e futuro</h2>
+            <p class="lead">Encravado entre os rios Jordão e Piquiri, no planalto paranaense, Entre Rios é um distrito de Guarapuava que carrega uma identidade única: a fusão da cultura <strong>Suábio-Brasileira</strong> com a riqueza do solo do terceiro planalto paranaense.</p>
+            <p>Fundada por imigrantes alemães da região da Suábia (Danúbio), a colônia transformou terras de campo em um dos territórios agrícolas mais produtivos e organizados do sul do Brasil — sem abrir mão de suas raízes, festas e sabores.</p>
+          </div>
+          <div class="intro-stats" aria-label="Números de Entre Rios">
+            <!-- renderizado via JS: data.stats -->
+            <div id="stats-container" class="stats-grid"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Carrossel de galeria -->
+      <div class="section-gallery reveal" aria-label="Galeria de imagens de Entre Rios">
+        <div class="gallery-header">
+          <h2 class="section-title">Paisagens & Cultura</h2>
+          <div class="carousel-controls" role="group" aria-label="Controles do carrossel">
+            <button class="carousel-btn" id="carousel-prev" aria-label="Imagem anterior">&#8592;</button>
+            <button class="carousel-btn" id="carousel-next" aria-label="Próxima imagem">&#8594;</button>
+          </div>
+        </div>
+
+        <div class="carousel" id="carousel" role="region" aria-live="polite" aria-atomic="true">
+          <div class="carousel-track" id="carousel-track">
+            <!-- slides renderizados via JS: data.gallery -->
+          </div>
+        </div>
+
+        <div class="carousel-dots" id="carousel-dots" role="group" aria-label="Indicadores do carrossel"></div>
+      </div>
+
+      <!-- Cards temáticos -->
+      <div class="section-cards reveal">
+        <h2 class="section-title text-center">Pilares de Entre Rios</h2>
+        <div class="cards-grid" id="pilares-grid" role="list">
+          <!-- renderizado via JS: data.pilares -->
+        </div>
+      </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         PÁGINA 2 — HISTÓRIA & MEIO AMBIENTE
+    ====================================================== -->
+    <section id="historia" class="page page-historia" aria-labelledby="historia-title">
+
+      <div class="section-hero-minor reveal">
+        <h2 id="historia-title" class="page-title">História &amp; <em>Meio Ambiente</em></h2>
+        <p class="page-subtitle">Da imigração suábia à agricultura sustentável</p>
+      </div>
+
+      <!-- Timeline -->
+      <div class="timeline-section reveal" aria-label="Linha do tempo de Entre Rios">
+        <h3 class="subsection-title">Linha do Tempo</h3>
+        <ol class="timeline" id="timeline-list">
+          <!-- renderizado via JS: data.timeline -->
+        </ol>
+      </div>
+
+      <!-- Acordeão Meio Ambiente -->
+      <div class="accordion-section reveal">
+        <h3 class="subsection-title">Impacto Ambiental &amp; Sustentabilidade</h3>
+        <div class="accordion" id="accordion" role="list">
+          <!-- renderizado via JS: data.acordeao -->
+        </div>
+      </div>
+
+      <!-- Mapa conceitual / infográfico -->
+      <div class="infographic-section reveal">
+        <h3 class="subsection-title">Ciclo Sustentável de Entre Rios</h3>
+        <div class="infographic" id="infographic">
+          <!-- renderizado via JS: data.infografico -->
+        </div>
+      </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         PÁGINA 3 — MINI JOGO
+    ====================================================== -->
+    <section id="jogo" class="page page-jogo" aria-labelledby="jogo-title">
+
+      <div class="section-hero-minor reveal">
+        <h2 id="jogo-title" class="page-title">Mini <em>Jogo</em></h2>
+        <p class="page-subtitle">Teste seus conhecimentos sobre Entre Rios</p>
+      </div>
+
+      <div class="game-wrapper reveal">
+
+        <!-- Tela inicial -->
+        <div class="game-screen" id="game-start" aria-live="polite">
+          <div class="game-card">
+            <div class="game-icon" aria-hidden="true">🌾</div>
+            <h3 class="game-card-title">Quiz Entre Rios</h3>
+            <p>Responda 8 perguntas sobre a história, agricultura e sustentabilidade de Entre Rios. Cada resposta certa vale 10 pontos!</p>
+            <div class="game-meta">
+              <span>8 perguntas</span>
+              <span>•</span>
+              <span>Sem limite de tempo</span>
+            </div>
+            <button class="btn-primary" id="btn-start-game">Começar Quiz</button>
+          </div>
+        </div>
+
+        <!-- Tela de pergunta -->
+        <div class="game-screen hidden" id="game-question" aria-live="polite" aria-atomic="false">
+          <div class="game-progress">
+            <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="8" aria-label="Progresso do quiz">
+              <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <span class="progress-text" id="progress-text">1 / 8</span>
+          </div>
+          <div class="question-card">
+            <p class="question-number" id="question-number" aria-label="Pergunta atual"></p>
+            <p class="question-text" id="question-text" role="heading" aria-level="3"></p>
+            <div class="answers-grid" id="answers-grid" role="radiogroup" aria-label="Opções de resposta">
+              <!-- renderizado via JS -->
+            </div>
+          </div>
+          <div class="question-feedback hidden" id="question-feedback" role="alert"></div>
+        </div>
+
+        <!-- Tela de resultado -->
+        <div class="game-screen hidden" id="game-result" aria-live="polite">
+          <div class="game-card result-card">
+            <div class="result-score" id="result-score" aria-label="Pontuação final"></div>
+            <h3 class="game-card-title" id="result-title"></h3>
+            <p id="result-message"></p>
+            <div class="result-badges" id="result-badges" aria-label="Conquistas"></div>
+            <button class="btn-primary" id="btn-restart-game">Jogar Novamente</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ======================================================
+         PÁGINA 4 — AUTOR
+    ====================================================== -->
+    <section id="autor" class="page page-autor" aria-labelledby="autor-title">
+
+      <div class="section-hero-minor reveal">
+        <h2 id="autor-title" class="page-title">Sobre o <em>Autor</em></h2>
+        <p class="page-subtitle">Quem está por trás deste projeto</p>
+      </div>
+
+      <div class="autor-layout reveal">
+
+        <!-- Perfil -->
+        <article class="autor-profile" aria-label="Perfil do autor">
+          <div class="autor-avatar" aria-hidden="true">
+            <div class="avatar-placeholder">
+              <span>EA</span>
+            </div>
+            <div class="avatar-ring" aria-hidden="true"></div>
+          </div>
+          <div class="autor-info">
+            <h3 class="autor-name">Estudante / Pesquisador</h3>
+            <p class="autor-role">Projeto Acadêmico · Educação Ambiental</p>
+            <p class="autor-bio">Este projeto foi desenvolvido como uma iniciativa educacional para divulgar a história, a cultura e as práticas de sustentabilidade de Entre Rios, distrito de Guarapuava (PR). A pesquisa busca valorizar a identidade suábio-brasileira e os avanços no manejo sustentável da terra.</p>
+          </div>
+        </article>
+
+        <!-- Abas do Autor -->
+        <div class="autor-tabs" role="tablist" aria-label="Informações do autor" id="autor-tablist">
+          <!-- tabs renderizadas via JS: data.autorTabs -->
+        </div>
+        <div class="autor-tab-panels" id="autor-tab-panels">
+          <!-- painéis renderizados via JS -->
+        </div>
+
+      </div>
+
+      <!-- Fontes e referências -->
+      <div class="references-section reveal">
+        <h3 class="subsection-title">Referências &amp; Fontes</h3>
+        <ul class="references-list" id="references-list" role="list">
+          <!-- renderizado via JS: data.referencias -->
+        </ul>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="logo-mark" aria-hidden="true">ER</span>
+        <p>Entre Rios · Tradição &amp; Sustentabilidade</p>
+      </div>
+      <p class="footer-copy">Projeto educacional &copy; 2025 · Guarapuava, Paraná, Brasil</p>
+      <nav aria-label="Links de rodapé">
+        <ul class="footer-nav" role="list">
+          <li><a href="#home">Apresentação</a></li>
+          <li><a href="#historia">História</a></li>
+          <li><a href="#jogo">Jogo</a></li>
+          <li><a href="#autor">Autor</a></li>
+        </ul>
+      </nav>
     </div>
-  </div>
-</section>
+  </footer>
 
-</main>
-
-<footer class="footer">
-  <p>© 2026 - Projeto Educacional</p>
-</footer>
-
-<!-- SEO Schema -->
-<script type="application/ld+json">
-{
- "@context": "https://schema.org",
- "@type": "Article",
- "headline": "Anquilossauros",
- "description": "Dinossauros blindados do período Cretáceo"
-}
-</script>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
+
