@@ -1,1025 +1,633 @@
-/**
- * ENTRE RIOS — script.js
- * ========================
- * ÍNDICE:
- * 1.  DATA STORE (todos os dados do site)
- * 2.  ACESSIBILIDADE (fonte + contraste)
- * 3.  NAVEGAÇÃO (header + scroll + mobile)
- * 4.  SCROLL REVEAL
- * 5.  RENDERIZAÇÃO: Stats
- * 6.  RENDERIZAÇÃO: Galeria / Carrossel
- * 7.  RENDERIZAÇÃO: Cards de Pilares
- * 8.  RENDERIZAÇÃO: Timeline
- * 9.  RENDERIZAÇÃO: Acordeão
- * 10. RENDERIZAÇÃO: Infográfico
- * 11. RENDERIZAÇÃO: Abas do Autor
- * 12. RENDERIZAÇÃO: Referências
- * 13. MINI JOGO (Quiz)
- * 14. INIT
- */
+/* ============================================================
+   ENTRE RIOS – script.js
+   Módulos: Dados, Acessibilidade, Navbar, Scroll Reveal,
+            Carrossel, Tabs, Acordeão, Timeline, Partículas
+   ============================================================ */
 
+'use strict';
 
-/* =====================================================
-   1. DATA STORE
-   → Edite os objetos abaixo para mudar conteúdos
-   ===================================================== */
-const data = {
+/* ============================================================
+   1. DADOS – Arrays de objetos (edite aqui para mudar conteúdo)
+   ============================================================ */
 
-  // --- Cards de estatísticas (Página 1) ---
-  stats: [
-    { number: '1951', label: 'Ano de fundação' },
-    { number: '7',    label: 'Subcomunidades' },
-    { number: '95%',  label: 'Área agrícola' },
-    { number: '40k',  label: 'Ha cultivados' },
-  ],
+const STATS_DATA = [
+  { number: '6.000',  label: 'habitantes' },
+  { number: '6',      label: 'colônias' },
+  { number: '1951',   label: 'ano de fundação' },
+  { number: '70+',    label: 'anos de história' },
+];
 
-  // --- Galeria / Carrossel (Página 1) ---
-  gallery: [
-    {
-      emoji: '🌾',
-      bgColor: '#2d1f0a',
-      gradientFrom: '#3d2b0f',
-      gradientTo: '#1a1208',
-      category: 'Agricultura',
-      title: 'Lavouras de Soja',
-      desc: 'Entre Rios é referência nacional no cultivo de soja com manejo conservacionista do solo.',
-    },
-    {
-      emoji: '🌽',
-      bgColor: '#1e3a1e',
-      gradientFrom: '#2d5a27',
-      gradientTo: '#0d1f0d',
-      category: 'Grãos',
-      title: 'Milho e Rotação',
-      desc: 'A rotação de culturas entre milho, trigo e soja preserva a fertilidade natural do solo paranaense.',
-    },
-    {
-      emoji: '🎪',
-      bgColor: '#3a1a0a',
-      gradientFrom: '#5c3a1e',
-      gradientTo: '#1a0a04',
-      category: 'Cultura',
-      title: 'Festa Suábia',
-      desc: 'Anualmente a Festa do Colono celebra a herança alemã com gastronomia típica, música e danças folclóricas.',
-    },
-    {
-      emoji: '🏞️',
-      bgColor: '#0a1e2d',
-      gradientFrom: '#1a3a5c',
-      gradientTo: '#040d1a',
-      category: 'Paisagem',
-      title: 'Campos do Planalto',
-      desc: 'O terceiro planalto paranaense oferece solos férteis de origem basáltica, ideais para a agricultura.',
-    },
-    {
-      emoji: '🐄',
-      bgColor: '#1a2d0a',
-      gradientFrom: '#2a4a1a',
-      gradientTo: '#0a1a04',
-      category: 'Pecuária',
-      title: 'Produção Leiteira',
-      desc: 'A integração lavoura-pecuária é marca registrada das propriedades familiares da colônia.',
-    },
-    {
-      emoji: '🌿',
-      bgColor: '#0d1a0a',
-      gradientFrom: '#1e3a1e',
-      gradientTo: '#040d04',
-      category: 'Sustentabilidade',
-      title: 'Reflorestamento',
-      desc: 'Programas de recuperação de matas ciliares protegem os rios Jordão e Piquiri na região.',
-    },
-  ],
+const CARDS_DATA = [
+  {
+    icon: '🌱',
+    title: 'Plantio Direto',
+    text: 'A AGRÁRIA foi pioneira no Brasil na adoção do sistema plantio direto, que conserva o solo, reduz a erosão e sequestra carbono.',
+    tag: 'Solo',
+  },
+  {
+    icon: '💧',
+    title: 'Gestão de Recursos Hídricos',
+    text: 'Corredores de vegetação nativa protegem nascentes e rios. O uso racional da água é monitorado em toda a cadeia produtiva.',
+    tag: 'Água',
+  },
+  {
+    icon: '☀️',
+    title: 'Energia Renovável',
+    text: 'Painéis solares e biodigestores transformam resíduos agrícolas em energia limpa, reduzindo a pegada de carbono das operações.',
+    tag: 'Energia',
+  },
+  {
+    icon: '🌾',
+    title: 'Agricultura de Precisão',
+    text: 'Tecnologia de sensoriamento remoto e drones orientam a aplicação de insumos, evitando desperdício e aumentando a eficiência.',
+    tag: 'Tecnologia',
+  },
+  {
+    icon: '🌳',
+    title: 'Reflorestamento',
+    text: 'Mais de 3.000 hectares de matas nativas foram restaurados ao longo dos afluentes do Rio Jordão, preservando a biodiversidade.',
+    tag: 'Biodiversidade',
+  },
+  {
+    icon: '🤝',
+    title: 'Economia Solidária',
+    text: 'A cooperativa distribui resultados entre os associados, investe em educação e mantém serviços de saúde para toda a comunidade.',
+    tag: 'Comunidade',
+  },
+];
 
-  // --- Pilares temáticos (Página 1) ---
-  pilares: [
-    {
-      icon: '🌱',
-      title: 'Agricultura Familiar',
-      text: 'Pequenas e médias propriedades estruturam a base produtiva de Entre Rios, combinando tradição suábia com tecnologia moderna.',
-    },
-    {
-      icon: '🤝',
-      title: 'Cooperativismo',
-      text: 'A AGRÁRIA, cooperativa centenária, organiza a produção, armazenagem e comercialização dos grãos da colônia.',
-    },
-    {
-      icon: '💧',
-      title: 'Recursos Hídricos',
-      text: 'Situado entre os rios Jordão e Piquiri, o distrito cuida ativamente da preservação das nascentes e matas ciliares.',
-    },
-    {
-      icon: '🏛️',
-      title: 'Identidade Cultural',
-      text: 'A gastronomia, o dialeto e as festas folclóricas mantêm viva a herança dos imigrantes alemães do século XX.',
-    },
-    {
-      icon: '📚',
-      title: 'Educação Rural',
-      text: 'Escolas comunitárias e programas de extensão rural formam jovens agricultores comprometidos com a sustentabilidade.',
-    },
-    {
-      icon: '🔬',
-      title: 'Inovação Agrícola',
-      text: 'Parceria com IAPAR e Embrapa desenvolvem variedades adaptadas ao clima subtropical do planalto paranaense.',
-    },
-  ],
+const CAROUSEL_DATA = [
+  {
+    icon: '🌅',
+    bg: 'linear-gradient(135deg,#c8973a,#8a6835)',
+    title: 'Colheita do Trigo',
+    caption: 'Julho – Colônia Vitória · As colheitadeiras atravessam hectares de ouro.',
+  },
+  {
+    icon: '🏘️',
+    bg: 'linear-gradient(135deg,#3a5c3e,#6b9c6f)',
+    title: 'Arquitetura Suábia',
+    caption: 'Casas enxaimel preservam a identidade arquitetônica dos imigrantes.',
+  },
+  {
+    icon: '🎶',
+    bg: 'linear-gradient(135deg,#4a3520,#7a5c44)',
+    title: 'Festival Cultural',
+    caption: 'Outubro Fest – danças, gastronomia e música trazem a Suábia ao Paraná.',
+  },
+  {
+    icon: '🏭',
+    bg: 'linear-gradient(135deg,#2e4a3e,#3a5c3e)',
+    title: 'Moagem AGRÁRIA',
+    caption: 'Farinha de trigo produzida na região abastece o Sul do Brasil.',
+  },
+  {
+    icon: '🌲',
+    bg: 'linear-gradient(135deg,#1a3a1e,#3a5c3e)',
+    title: 'Reserva de Mata Ciliar',
+    caption: 'Corredores ecológicos conectam fragmentos de Floresta com Araucária.',
+  },
+];
 
-  // --- Linha do tempo (Página 2) ---
-  timeline: [
-    {
-      year: '1951',
-      title: 'Fundação da Colônia',
-      text: 'Cerca de 800 famílias de imigrantes suábios do Danúbio chegam ao Paraná e fundam o distrito de Entre Rios em terras concedidas pelo governo estadual.',
-    },
-    {
-      year: '1952',
-      title: 'Criação da Cooperativa',
-      text: 'Nasce a Cooperativa Agrária Mista Entre Rios (AGRÁRIA), instrumento central para organizar a produção e garantir mercado aos colonos.',
-    },
-    {
-      year: '1960s',
-      title: 'Modernização das Lavouras',
-      text: 'Introdução da mecanização agrícola e do cultivo de soja, transformando campos nativos em áreas de alta produtividade.',
-    },
-    {
-      year: '1975',
-      title: 'Plantio Direto Pioneiro',
-      text: 'Entre Rios torna-se um dos primeiros territórios do Brasil a adotar o sistema de plantio direto, revolucionando a conservação do solo.',
-    },
-    {
-      year: '1990s',
-      title: 'Programas Ambientais',
-      text: 'Início de programas sistemáticos de reflorestamento, recuperação de matas ciliares e gestão dos recursos hídricos.',
-    },
-    {
-      year: '2000s',
-      title: 'Certificações e Qualidade',
-      text: 'A AGRÁRIA conquista certificações internacionais de qualidade e sustentabilidade, abrindo mercados para exportação de grãos e malte.',
-    },
-    {
-      year: 'Hoje',
-      title: 'Referência em Sustentabilidade',
-      text: 'Entre Rios é reconhecida como modelo de integração entre produtividade agrícola, preservação ambiental e manutenção da identidade cultural.',
-    },
-  ],
+const PILLARS_DATA = [
+  {
+    id: 'pilar-1',
+    label: '🌾 Agricultura',
+    icon: '🌾',
+    title: 'Excelência Agrícola',
+    text: 'Entre Rios é uma das maiores produtoras de trigo do Brasil. A AGRÁRIA introduziu variedades adaptadas ao clima subtropical, combinando genética avançada com o respeito à rotação de culturas e à saúde do solo.',
+  },
+  {
+    id: 'pilar-2',
+    label: '🏫 Educação',
+    icon: '🏫',
+    title: 'Educação de Qualidade',
+    text: 'A Fundação Educacional de Entre Rios (FUNDETEC) opera escolas de ensino fundamental ao técnico, formando jovens agricultores com visão de mundo global e raízes locais.',
+  },
+  {
+    id: 'pilar-3',
+    label: '🌿 Meio Ambiente',
+    icon: '🌿',
+    title: 'Compromisso Ambiental',
+    text: 'Desde a década de 1970, Entre Rios investe em preservação ambiental. Hoje, mais de 30% de sua área é coberta por vegetação nativa, superando exigências do Código Florestal.',
+  },
+  {
+    id: 'pilar-4',
+    label: '🎭 Cultura',
+    icon: '🎭',
+    title: 'Identidade Cultural',
+    text: 'As festas tradicionais, a gastronomia suábia, a arquitetura enxaimel e o dialeto dos mais velhos mantêm viva a memória de um povo que reconstruiu sua vida em terras paranaenses.',
+  },
+];
 
-  // --- Acordeão de sustentabilidade (Página 2) ---
-  acordeao: [
-    {
-      icon: '🌍',
-      title: 'Plantio Direto e Conservação do Solo',
-      tags: ['Carbono', 'Erosão Zero', 'Microbiologia'],
-      text: [
-        'O sistema de plantio direto, praticado há mais de 40 anos em Entre Rios, mantém a palha sobre o solo, reduzindo a erosão em até 90%. Esta técnica sequestra carbono e mantém a umidade do solo, reduzindo a necessidade de irrigação.',
-        'A cobertura permanente do solo com resíduos vegetais cria um ambiente rico em matéria orgânica, favorecendo a atividade de minhocas e microrganismos que naturalmente fertilizam a terra.',
-      ],
-    },
-    {
-      icon: '💧',
-      title: 'Gestão de Recursos Hídricos',
-      tags: ['Matas Ciliares', 'Nascentes', 'APPs'],
-      text: [
-        'A localização estratégica entre os rios Jordão e Piquiri exige cuidado permanente com a qualidade da água. Programas de recuperação de Áreas de Preservação Permanente (APPs) protegem as margens dos cursos d\'água.',
-        'Sistemas de monitoramento da qualidade da água e de controle de uso de agroquímicos nas proximidades de rios são adotados por toda a cadeia cooperativada.',
-      ],
-    },
-    {
-      icon: '🔄',
-      title: 'Rotação de Culturas e Biodiversidade',
-      tags: ['Soja', 'Trigo', 'Milho', 'Aveia'],
-      text: [
-        'A rotação sistemática entre soja, milho, trigo e aveia quebra ciclos de pragas e doenças naturalmente, reduzindo o uso de defensivos. Esta diversidade de cultivos também suporta maior diversidade de insetos benéficos e polinizadores.',
-        'Corredores ecológicos entre propriedades e a manutenção de reservas legais acima do mínimo legal favorecem a fauna silvestre e os serviços ecossistêmicos da região.',
-      ],
-    },
-    {
-      icon: '♻️',
-      title: 'Gestão de Resíduos e Embalagens',
-      tags: ['Embalagens Vazias', 'Logística Reversa', 'ISO 14001'],
-      text: [
-        'A AGRÁRIA coordena um sistema exemplar de logística reversa de embalagens de agroquímicos. As embalagens são lavadas, devolvidas aos postos de coleta e destinadas à reciclagem, evitando contaminação do solo e da água.',
-        'Programas de compostagem de resíduos orgânicos e reutilização de materiais constroem uma economia circular dentro da própria colônia.',
-      ],
-    },
-    {
-      icon: '☀️',
-      title: 'Energia Renovável',
-      tags: ['Solar', 'Biomassa', 'Eficiência'],
-      text: [
-        'O complexo industrial da AGRÁRIA utiliza biomassa (casca de arroz, palha de trigo) para geração de energia térmica nos processos de secagem de grãos, reduzindo a dependência de combustíveis fósseis.',
-        'Painéis fotovoltaicos instalados em armazéns e instalações da cooperativa geram energia limpa e demonstram o compromisso com a transição energética no campo.',
-      ],
-    },
-  ],
+const TIMELINE_DATA = [
+  {
+    year: '1945–1950',
+    title: 'A diáspora suábia',
+    text: 'Com o fim da Segunda Guerra, cerca de 4.500 famílias suábias são expulsas do leste europeu. Após anos em campos de refugiados na Alemanha Ocidental, negociam com o governo brasileiro a vinda ao Paraná.',
+  },
+  {
+    year: '1951',
+    title: 'Chegada e fundação',
+    text: 'Em 26 de março, os primeiros colonos chegam à região de Guarapuava. Encontram mata fechada e precisam abrir caminhos, construir casas e preparar a terra antes do inverno.',
+  },
+  {
+    year: '1959',
+    title: 'Criação da AGRÁRIA',
+    text: 'A Cooperativa Agrária Mista Entre Rios Ltda. é fundada para organizar a produção, comercialização e beneficiamento dos produtos agrícolas, especialmente o trigo.',
+  },
+  {
+    year: '1970s',
+    title: 'Revolução do plantio direto',
+    text: 'Técnicos da AGRÁRIA e agricultores locais pioneiram o sistema plantio direto no Brasil, técnica que hoje está presente em 35 milhões de hectares no país.',
+  },
+  {
+    year: '1990s',
+    title: 'Diversificação produtiva',
+    text: 'A cooperativa expande para cevada (abastecendo cervejarias), malte, aves e suínos, consolidando Entre Rios como polo agroindustrial completo.',
+  },
+  {
+    year: '2000s–hoje',
+    title: 'Era da sustentabilidade',
+    text: 'Certificações internacionais, energia renovável, agricultura de precisão e programas de educação ambiental posicionam Entre Rios como referência global em agropecuária sustentável.',
+  },
+];
 
-  // --- Infográfico do Ciclo Sustentável (Página 2) ---
-  infografico: [
-    {
-      step: '01',
-      icon: '🌱',
-      title: 'Plantio Conservacionista',
-      desc: 'Sementes de alta qualidade em solo coberto por palha, sem revolvimento.',
-    },
-    {
-      step: '02',
-      icon: '🌿',
-      title: 'Crescimento Monitorado',
-      desc: 'Agricultura de precisão, drones e sensores orientam aplicações racionais.',
-    },
-    {
-      step: '03',
-      icon: '🌾',
-      title: 'Colheita e Armazenagem',
-      desc: 'Colheita mecanizada e secagem com biomassa nos silos cooperativados.',
-    },
-    {
-      step: '04',
-      icon: '♻️',
-      title: 'Retorno ao Solo',
-      desc: 'Palha e resíduos retornam como cobertura, reiniciando o ciclo sustentável.',
-    },
-  ],
+const ACCORDION_DATA = [
+  {
+    id: 'acc-1',
+    title: '🏠 Arquitetura enxaimel',
+    content: 'As casas de enxaimel (Fachwerkhaus) trazidas da Europa central distinguem as colônias de Entre Rios. Com estruturas de madeira expostas preenchidas por tijolos, o estilo sobreviveu e se adapta ao clima paranaense, sendo hoje patrimônio arquitetônico da região.',
+  },
+  {
+    id: 'acc-2',
+    title: '🥘 Gastronomia suábia',
+    content: 'Pratos como Schnitzel, Maultaschen (espécie de ravióli), Sauerkraut (chucrute artesanal) e Strudel convivem com a culinária paranaense, criando uma fusão única. Nos festivais, vinhos artesanais e cervejas produzidas localmente completam a mesa.',
+  },
+  {
+    id: 'acc-3',
+    title: '🎵 Música e dança',
+    content: 'Os grupos de dança folclórica mantêm vivos os Ländler e as Polkas suábias. Instrumentos como o acordeão e o tuba integram bandas comunitárias que se apresentam nos festivais culturais anuais.',
+  },
+  {
+    id: 'acc-4',
+    title: '📚 Idioma e memória',
+    content: 'O "Donauschwäbisch" (dialeto suábio do Danúbio) ainda é falado pelas gerações mais antigas. Projetos de salvaguarda documentam esse patrimônio linguístico imaterial, com publicações bilíngues e acervos de história oral.',
+  },
+];
 
-  // --- Abas do Autor (Página 4) ---
-  autorTabs: [
-    {
-      id: 'sobre',
-      label: 'Sobre o Projeto',
-      content: `
-        <p>Este site foi criado como projeto educacional interdisciplinar, unindo <strong>educação ambiental, história regional e tecnologia</strong>. O objetivo é difundir o conhecimento sobre Entre Rios para estudantes, pesquisadores e visitantes interessados na história da colonização e nas práticas agrícolas sustentáveis do sul do Brasil.</p>
-        <p>O projeto busca valorizar a memória dos imigrantes suábios e sua contribuição para o desenvolvimento agrário do Paraná, ao mesmo tempo que documenta os avanços em sustentabilidade conquistados ao longo de mais de 70 anos de história.</p>
-        <div class="skills-list">
-          <span class="skill-tag">Educação Ambiental</span>
-          <span class="skill-tag">História Regional</span>
-          <span class="skill-tag">Agricultura Sustentável</span>
-          <span class="skill-tag">Cultura Suábia</span>
-          <span class="skill-tag">Cooperativismo</span>
-        </div>
-      `,
-    },
-    {
-      id: 'metodologia',
-      label: 'Metodologia',
-      content: `
-        <p>A pesquisa foi realizada com base em levantamento bibliográfico, consulta a documentos históricos da AGRÁRIA, visitas técnicas à região e entrevistas com agricultores e lideranças comunitárias de Entre Rios.</p>
-        <p>As informações ambientais foram cruzadas com dados do IBGE, IPARDES e relatórios de sustentabilidade da Cooperativa Agrária. A linha do tempo foi validada com registros do Arquivo Público do Paraná e publicações do IAPAR.</p>
-        <div class="skills-list">
-          <span class="skill-tag">Pesquisa Bibliográfica</span>
-          <span class="skill-tag">Entrevistas</span>
-          <span class="skill-tag">Dados IBGE/IPARDES</span>
-          <span class="skill-tag">Visitas Técnicas</span>
-        </div>
-      `,
-    },
-    {
-      id: 'contato',
-      label: 'Contato',
-      content: `
-        <p>Este é um projeto acadêmico aberto. Caso tenha sugestões, correções ou queira colaborar com informações sobre Entre Rios, entre em contato.</p>
-        <ul class="contact-list">
-          <li class="contact-item"><span class="contact-icon">📧</span> projeto.entrerios@email.com</li>
-          <li class="contact-item"><span class="contact-icon">🏫</span> Escola / Instituição de Ensino</li>
-          <li class="contact-item"><span class="contact-icon">📍</span> Guarapuava, Paraná, Brasil</li>
-          <li class="contact-item"><span class="contact-icon">📅</span> Projeto desenvolvido em 2025</li>
-        </ul>
-      `,
-    },
-  ],
+const TECH_CARDS_DATA = [
+  { icon: '📄', title: 'HTML5 Semântico', text: 'Tags semânticas e atributos ARIA para máxima acessibilidade e SEO.', tag: 'Estrutura' },
+  { icon: '🎨', title: 'CSS3 Moderno', text: 'Variables, Grid, Flexbox, animações, mobile-first e alto contraste.', tag: 'Design' },
+  { icon: '⚙️', title: 'JavaScript ES6+', text: 'Módulos, array methods, DOM dinâmico, Intersection Observer API.', tag: 'Lógica' },
+  { icon: '♿', title: 'Acessibilidade WCAG', text: 'Foco visível, ARIA roles, labels e controles de fonte e contraste.', tag: 'A11y' },
+  { icon: '📱', title: 'Design Responsivo', text: 'Layout adaptável a mobile, tablet e desktop com breakpoints claros.', tag: 'UX' },
+  { icon: '🚀', title: 'Zero dependências', text: 'Sem frameworks externos – HTML, CSS e JS puros para máxima performance.', tag: 'Performance' },
+];
 
-  // --- Referências bibliográficas (Página 4) ---
-  referencias: [
-    {
-      title: 'COOPERATIVA AGRÁRIA MISTA ENTRE RIOS LTDA.',
-      citation: 'Relatório de Sustentabilidade 2022–2023. Guarapuava: AGRÁRIA, 2023.',
-    },
-    {
-      title: 'WACHOWICZ, Ruy Christovam.',
-      citation: 'História do Paraná. 2. ed. Curitiba: Gráfica Vicentina, 1988.',
-    },
-    {
-      title: 'IBGE — Instituto Brasileiro de Geografia e Estatística.',
-      citation: 'Censo Agropecuário 2017. Rio de Janeiro: IBGE, 2019.',
-    },
-    {
-      title: 'IAPAR — Instituto Agronômico do Paraná.',
-      citation: 'Plantio Direto no Paraná: história e evolução. Londrina: IAPAR, 2015.',
-    },
-    {
-      title: 'EMBRAPA Soja.',
-      citation: 'Tecnologias de produção de soja – Região Central do Brasil 2022. Londrina: Embrapa Soja, 2021.',
-    },
-    {
-      title: 'IPARDES — Instituto Paranaense de Desenvolvimento Econômico e Social.',
-      citation: 'Caderno estatístico: município de Guarapuava. Curitiba: IPARDES, 2023.',
-    },
-  ],
+/* ============================================================
+   2. UTILITÁRIOS
+   ============================================================ */
 
-  // --- Perguntas do Quiz (Página 3) ---
-  quiz: [
-    {
-      question: 'Em que ano o distrito de Entre Rios foi fundado por imigrantes suábios?',
-      answers: ['1935', '1945', '1951', '1960'],
-      correct: 2,
-      explanation: 'Entre Rios foi fundada em 1951, quando cerca de 800 famílias de imigrantes alemães da região do Danúbio (Suábia) chegaram ao Paraná.',
-    },
-    {
-      question: 'Entre quais rios está localizado o distrito de Entre Rios?',
-      answers: ['Iguaçu e Paraná', 'Jordão e Piquiri', 'Ivaí e Tibagi', 'Piquiri e Iguaçu'],
-      correct: 1,
-      explanation: 'O distrito está situado entre os rios Jordão e Piquiri, no terceiro planalto paranaense.',
-    },
-    {
-      question: 'Qual cooperativa organiza a produção agrícola de Entre Rios?',
-      answers: ['COAMO', 'COPACOL', 'AGRÁRIA', 'COCAMAR'],
-      correct: 2,
-      explanation: 'A Cooperativa Agrária Mista Entre Rios (AGRÁRIA) foi fundada em 1952 e é o principal elo econômico da colônia.',
-    },
-    {
-      question: 'Qual sistema agrícola pioneiro foi adotado em Entre Rios na década de 1970?',
-      answers: ['Agroflorestas', 'Plantio Direto', 'Cultivo Orgânico', 'Hidroponia'],
-      correct: 1,
-      explanation: 'O Plantio Direto, que mantém a palha sobre o solo sem revolvimento, foi adotado pioneiramente em Entre Rios por volta de 1975.',
-    },
-    {
-      question: 'De qual região da Europa vieram os imigrantes fundadores de Entre Rios?',
-      answers: ['Itália do Norte', 'Alsácia, França', 'Suábia (Danúbio), Alemanha', 'Baviera, Alemanha'],
-      correct: 2,
-      explanation: 'Os fundadores são descendentes de alemães da região da Suábia, às margens do rio Danúbio, conhecidos como "Donauschwaben" (suábios do Danúbio).',
-    },
-    {
-      question: 'Qual benefício ambiental direto o Plantio Direto proporciona ao solo?',
-      answers: ['Elimina todos os agroquímicos', 'Reduz a erosão em até 90%', 'Aumenta a acidez do solo', 'Elimina a necessidade de rotação'],
-      correct: 1,
-      explanation: 'A cobertura permanente do solo com palha no sistema de Plantio Direto reduz a erosão hídrica em até 90%, além de reter umidade e sequestrar carbono.',
-    },
-    {
-      question: 'Qual município é sede administrativa do distrito de Entre Rios?',
-      answers: ['Pinhão', 'Laranjeiras do Sul', 'Guarapuava', 'Pitanga'],
-      correct: 2,
-      explanation: 'Entre Rios é um distrito do município de Guarapuava, localizado na região centro-sul do Paraná.',
-    },
-    {
-      question: 'Qual produto agrícola é o principal cultivo de Entre Rios?',
-      answers: ['Café', 'Cana-de-açúcar', 'Soja', 'Algodão'],
-      correct: 2,
-      explanation: 'A soja é o principal cultivo, seguida pelo milho e pelo trigo, dentro de um sistema de rotação de culturas que preserva a fertilidade do solo.',
-    },
-  ],
-};
-
-
-/* =====================================================
-   2. ACESSIBILIDADE — Fonte & Contraste
-   ===================================================== */
-
-/** Ajusta o tamanho da fonte via variável CSS --font-scale */
-function initFontControls() {
-  const MIN_SCALE = 0.8;
-  const MAX_SCALE = 1.5;
-  const STEP      = 0.1;
-
-  let scale = parseFloat(
-    localStorage.getItem('fontScale') || '1'
-  );
-
-  function applyScale(s) {
-    scale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, s));
-    document.documentElement.style.setProperty('--font-scale', scale);
-    localStorage.setItem('fontScale', scale);
-  }
-
-  // Aplica escala salva ao carregar
-  applyScale(scale);
-
-  document.getElementById('btn-increase-font').addEventListener('click', () => {
-    applyScale(scale + STEP);
-  });
-
-  document.getElementById('btn-decrease-font').addEventListener('click', () => {
-    applyScale(scale - STEP);
-  });
+/** Cria elemento com atributos e innerHTML opcionais */
+function createElement(tag, attrs = {}, innerHTML = '') {
+  const el = document.createElement(tag);
+  Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+  if (innerHTML) el.innerHTML = innerHTML;
+  return el;
 }
 
-/** Liga/desliga modo de alto contraste */
-function initHighContrast() {
-  const btn = document.getElementById('btn-contrast');
-  let active = localStorage.getItem('highContrast') === 'true';
+/** Seleciona elemento, retorna null sem erro */
+const $ = (sel, ctx = document) => ctx.querySelector(sel);
+const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
-  function apply(on) {
-    active = on;
+/* ============================================================
+   3. ACESSIBILIDADE – Tamanho de fonte e alto contraste
+   ============================================================ */
+(function initA11y() {
+  // Estado salvo no localStorage para persistir entre páginas
+  const FONT_KEY    = 'er_fontSize';
+  const CONTRAST_KEY = 'er_contrast';
+
+  let fontLevel = parseInt(localStorage.getItem(FONT_KEY) || '0', 10);
+  const FONT_STEP  = 2;    // px por clique
+  const FONT_MIN   = -4;   // -4px do padrão
+  const FONT_MAX   = 8;    // +8px do padrão
+  const BASE_SIZE  = 16;   // px base do :root
+
+  function applyFont() {
+    document.documentElement.style.fontSize = (BASE_SIZE + fontLevel) + 'px';
+    localStorage.setItem(FONT_KEY, fontLevel);
+  }
+
+  function applyContrast() {
+    const on = localStorage.getItem(CONTRAST_KEY) === '1';
     document.body.classList.toggle('high-contrast', on);
-    btn.setAttribute('aria-pressed', String(on));
-    localStorage.setItem('highContrast', String(on));
   }
 
-  // Aplica estado salvo
-  apply(active);
+  applyFont();
+  applyContrast();
 
-  btn.addEventListener('click', () => apply(!active));
-}
+  // Botões
+  const btnInc = $('#btn-font-inc');
+  const btnDec = $('#btn-font-dec');
+  const btnCon = $('#btn-contrast');
 
-
-/* =====================================================
-   3. NAVEGAÇÃO — Header scroll + Mobile
-   ===================================================== */
-function initNav() {
-  const toggle  = document.getElementById('nav-toggle');
-  const nav     = document.getElementById('main-nav');
-  const navLinks = nav.querySelectorAll('.nav-link');
-
-  // Toggle mobile
-  toggle.addEventListener('click', () => {
-    const expanded = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-expanded', String(!expanded));
-    nav.classList.toggle('open', !expanded);
-    document.body.style.overflow = expanded ? '' : 'hidden';
+  btnInc && btnInc.addEventListener('click', () => {
+    if (fontLevel < FONT_MAX) { fontLevel += FONT_STEP; applyFont(); }
   });
 
-  // Fecha ao clicar em link
-  navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      toggle.setAttribute('aria-expanded', 'false');
-      nav.classList.remove('open');
-      document.body.style.overflow = '';
+  btnDec && btnDec.addEventListener('click', () => {
+    if (fontLevel > FONT_MIN) { fontLevel -= FONT_STEP; applyFont(); }
+  });
+
+  btnCon && btnCon.addEventListener('click', () => {
+    const on = document.body.classList.toggle('high-contrast');
+    localStorage.setItem(CONTRAST_KEY, on ? '1' : '0');
+  });
+})();
+
+/* ============================================================
+   4. NAVBAR – Toggle mobile + scroll shadow
+   ============================================================ */
+(function initNavbar() {
+  const toggle = $('#nav-toggle');
+  const nav    = $('#nav-menu');
+  const navbar = $('.navbar');
+
+  if (toggle && nav) {
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      nav.classList.toggle('open', !expanded);
     });
-  });
 
-  // Active link ao scrollar
-  const sections = document.querySelectorAll('.page');
+    // Fecha menu ao clicar em link
+    $$('.nav__link', nav).forEach(link => {
+      link.addEventListener('click', () => {
+        toggle.setAttribute('aria-expanded', 'false');
+        nav.classList.remove('open');
+      });
+    });
 
-  function updateActiveLink() {
-    const scrollY = window.scrollY + 120;
-    let current = '';
-
-    sections.forEach(section => {
-      if (section.offsetTop <= scrollY) {
-        current = section.id;
+    // Fecha com ESC
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        toggle.setAttribute('aria-expanded', 'false');
+        nav.classList.remove('open');
+        toggle.focus();
       }
     });
-
-    navLinks.forEach(link => {
-      link.classList.toggle('active', link.dataset.page === current);
-    });
   }
 
-  window.addEventListener('scroll', updateActiveLink, { passive: true });
-  updateActiveLink();
-}
+  // Sombra na navbar ao rolar
+  if (navbar) {
+    const observer = new IntersectionObserver(
+      ([entry]) => navbar.classList.toggle('scrolled', !entry.isIntersecting),
+      { rootMargin: '-1px 0px 0px 0px', threshold: 0 }
+    );
+    const sentinel = createElement('div', { style: 'height:1px;position:absolute;top:0;left:0;right:0;' });
+    document.body.prepend(sentinel);
+    observer.observe(sentinel);
+  }
+})();
 
+/* ============================================================
+   5. SCROLL REVEAL – Intersection Observer
+   ============================================================ */
+(function initScrollReveal() {
+  const reveals = $$('.reveal');
+  if (!reveals.length) return;
 
-/* =====================================================
-   4. SCROLL REVEAL
-   ===================================================== */
-function initScrollReveal() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target); // só anima uma vez
       }
     });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  }, { threshold: 0.12, rootMargin: '0px 0px -48px 0px' });
 
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-}
+  reveals.forEach(el => observer.observe(el));
+})();
 
-
-/* =====================================================
-   5. RENDERIZAÇÃO: Stats
-   ===================================================== */
-function renderStats() {
-  const container = document.getElementById('stats-container');
+/* ============================================================
+   6. PARTÍCULAS DE TRIGO (hero)
+   ============================================================ */
+(function initParticles() {
+  const container = $('#hero-particles');
   if (!container) return;
 
-  container.innerHTML = data.stats.map(s => `
-    <div class="stat-card reveal">
-      <span class="stat-number">${s.number}</span>
-      <span class="stat-label">${s.label}</span>
-    </div>
-  `).join('');
+  const EMOJIS = ['🌾', '✦', '·'];
+  const COUNT  = 18;
 
-  // Adiciona ao observer depois de renderizar
-  container.querySelectorAll('.reveal').forEach(el => {
-    new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('is-visible');
-        }
-      });
-    }, { threshold: 0.1 }).observe(el);
-  });
-}
-
-
-/* =====================================================
-   6. CARROSSEL (Galeria)
-   ===================================================== */
-function renderCarousel() {
-  const track    = document.getElementById('carousel-track');
-  const dotsEl   = document.getElementById('carousel-dots');
-  const prevBtn  = document.getElementById('carousel-prev');
-  const nextBtn  = document.getElementById('carousel-next');
-
-  if (!track) return;
-
-  let currentIndex = 0;
-  let slideWidth   = 0;
-  let slidesVisible = 1;
-
-  // Renderiza slides
-  track.innerHTML = data.gallery.map((item, i) => `
-    <div class="carousel-slide" role="group" aria-label="Slide ${i + 1} de ${data.gallery.length}" aria-roledescription="slide">
-      <div class="slide-img-placeholder"
-           style="background: linear-gradient(135deg, ${item.gradientFrom}, ${item.gradientTo});"
-           role="img"
-           aria-label="${item.title}">
-        <span class="slide-emoji" aria-hidden="true">${item.emoji}</span>
-        <span>${item.title}</span>
-      </div>
-      <div class="slide-info">
-        <p class="slide-category">${item.category}</p>
-        <h3 class="slide-title">${item.title}</h3>
-        <p class="slide-desc">${item.desc}</p>
-      </div>
-    </div>
-  `).join('');
-
-  // Renderiza dots
-  dotsEl.innerHTML = data.gallery.map((_, i) => `
-    <button class="carousel-dot ${i === 0 ? 'active' : ''}"
-            aria-label="Ir para slide ${i + 1}"
-            data-index="${i}">
-    </button>
-  `).join('');
-
-  function getSlideDimensions() {
-    const firstSlide = track.querySelector('.carousel-slide');
-    if (!firstSlide) return;
-    slideWidth = firstSlide.offsetWidth + 20; // gap
-    const containerW = track.parentElement.offsetWidth;
-    slidesVisible = Math.max(1, Math.floor(containerW / slideWidth));
+  for (let i = 0; i < COUNT; i++) {
+    const p = createElement('span', { class: 'wheat-particle', 'aria-hidden': 'true' });
+    p.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+    p.style.setProperty('--dur',   `${6 + Math.random() * 8}s`);
+    p.style.setProperty('--delay', `${Math.random() * 12}s`);
+    p.style.left  = `${Math.random() * 100}%`;
+    p.style.bottom = `${Math.random() * 20}%`;
+    container.appendChild(p);
   }
+})();
 
-  function goTo(index) {
-    getSlideDimensions();
-    const maxIndex = data.gallery.length - 1;
-    currentIndex = Math.max(0, Math.min(index, maxIndex));
+/* ============================================================
+   7. STATS – Renderização dinâmica
+   ============================================================ */
+(function renderStats() {
+  const container = $('#stats-container');
+  if (!container) return;
 
-    track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+  STATS_DATA.forEach(stat => {
+    const item = createElement('div', { class: 'stat-item', role: 'listitem' });
+    item.innerHTML = `
+      <span class="stat-number" aria-label="${stat.number} ${stat.label}">${stat.number}</span>
+      <span class="stat-label" aria-hidden="true">${stat.label}</span>
+    `;
+    container.appendChild(item);
+  });
+})();
 
-    // Atualiza dots
-    dotsEl.querySelectorAll('.carousel-dot').forEach((dot, i) => {
-      dot.classList.toggle('active', i === currentIndex);
+/* ============================================================
+   8. CARDS DE SUSTENTABILIDADE – Renderização dinâmica
+   ============================================================ */
+(function renderCards() {
+  // index.html – cards de sustentabilidade
+  const sustContainer = $('#cards-container');
+  if (sustContainer) {
+    CARDS_DATA.forEach(card => {
+      sustContainer.appendChild(buildCard(card));
     });
-
-    // ARIA
-    track.setAttribute('aria-label', `Slide ${currentIndex + 1} de ${data.gallery.length}`);
   }
 
-  prevBtn.addEventListener('click', () => goTo(currentIndex - 1));
-  nextBtn.addEventListener('click', () => goTo(currentIndex + 1));
+  // autor.html – cards de tecnologias
+  const techContainer = $('#tech-cards');
+  if (techContainer) {
+    TECH_CARDS_DATA.forEach(card => {
+      techContainer.appendChild(buildCard(card));
+    });
+  }
 
-  // Teclado
-  document.getElementById('carousel').addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft')  goTo(currentIndex - 1);
-    if (e.key === 'ArrowRight') goTo(currentIndex + 1);
-  });
+  function buildCard({ icon, title, text, tag }) {
+    const el = createElement('article', { class: 'card', role: 'listitem' });
+    el.innerHTML = `
+      <div class="card__icon" aria-hidden="true">${icon}</div>
+      <h3 class="card__title">${title}</h3>
+      <p class="card__text">${text}</p>
+      <span class="card__tag">${tag}</span>
+    `;
+    return el;
+  }
+})();
 
-  // Dots clique
-  dotsEl.querySelectorAll('.carousel-dot').forEach(dot => {
-    dot.addEventListener('click', () => goTo(parseInt(dot.dataset.index)));
-  });
+/* ============================================================
+   9. TABS (Pilares) – index.html
+   ============================================================ */
+(function initTabs() {
+  const btnContainer   = $('#tab-buttons');
+  const panelContainer = $('#tab-panels');
+  if (!btnContainer || !panelContainer) return;
 
-  // Swipe touch
-  let touchStartX = 0;
-  track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-  track.addEventListener('touchend', e => {
-    const dx = e.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(dx) > 50) goTo(dx < 0 ? currentIndex + 1 : currentIndex - 1);
-  });
+  // Renderiza botões e painéis a partir dos dados
+  PILLARS_DATA.forEach((pilar, i) => {
+    // Botão
+    const btn = createElement('button', {
+      class:           `tab-btn${i === 0 ? ' active' : ''}`,
+      role:            'tab',
+      'aria-selected': i === 0 ? 'true' : 'false',
+      'aria-controls': pilar.id,
+      id:              `${pilar.id}-tab`,
+    }, pilar.label);
+    btnContainer.appendChild(btn);
 
-  // Recalcula ao redimensionar
-  window.addEventListener('resize', () => goTo(currentIndex), { passive: true });
-
-  // Init
-  getSlideDimensions();
-}
-
-
-/* =====================================================
-   7. RENDERIZAÇÃO: Cards de Pilares
-   ===================================================== */
-function renderPilares() {
-  const grid = document.getElementById('pilares-grid');
-  if (!grid) return;
-
-  grid.innerHTML = data.pilares.map(p => `
-    <article class="pilar-card" role="listitem">
-      <span class="pilar-icon" aria-hidden="true">${p.icon}</span>
-      <h3 class="pilar-title">${p.title}</h3>
-      <p class="pilar-text">${p.text}</p>
-    </article>
-  `).join('');
-}
-
-
-/* =====================================================
-   8. RENDERIZAÇÃO: Timeline
-   ===================================================== */
-function renderTimeline() {
-  const list = document.getElementById('timeline-list');
-  if (!list) return;
-
-  list.innerHTML = data.timeline.map((item, i) => `
-    <li class="timeline-item reveal" style="transition-delay: ${i * 0.08}s">
-      <p class="timeline-year">${item.year}</p>
-      <h4 class="timeline-title">${item.title}</h4>
-      <p class="timeline-text">${item.text}</p>
-    </li>
-  `).join('');
-
-  // Observer para os itens da timeline
-  list.querySelectorAll('.reveal').forEach(el => {
-    new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); });
-    }, { threshold: 0.1 }).observe(el);
-  });
-}
-
-
-/* =====================================================
-   9. ACORDEÃO (Expandáveis)
-   ===================================================== */
-function renderAcordeao() {
-  const container = document.getElementById('accordion');
-  if (!container) return;
-
-  container.innerHTML = data.acordeao.map((item, i) => `
-    <div class="accordion-item" role="listitem" id="acc-item-${i}">
-      <button class="accordion-trigger"
-              aria-expanded="false"
-              aria-controls="acc-body-${i}"
-              id="acc-btn-${i}">
-        <span>
-          <span class="acc-icon" aria-hidden="true">${item.icon}</span>
-          ${item.title}
-        </span>
-        <span class="accordion-chevron" aria-hidden="true">▾</span>
-      </button>
-      <div class="accordion-body"
-           id="acc-body-${i}"
-           role="region"
-           aria-labelledby="acc-btn-${i}">
-        <div class="accordion-body-inner">
-          ${item.text.map(t => `<p>${t}</p>`).join('')}
-          <div class="accordion-tags">
-            ${item.tags.map(tag => `<span class="accordion-tag">${tag}</span>`).join('')}
-          </div>
+    // Painel
+    const panel = createElement('div', {
+      id:               pilar.id,
+      class:            `tab-panel${i === 0 ? ' active' : ''}`,
+      role:             'tabpanel',
+      'aria-labelledby': `${pilar.id}-tab`,
+      tabindex:         '0',
+    });
+    panel.innerHTML = `
+      <div class="tab-panel__inner">
+        <div class="tab-panel__icon" aria-hidden="true">${pilar.icon}</div>
+        <div>
+          <h3 class="tab-panel__title">${pilar.title}</h3>
+          <p class="tab-panel__text">${pilar.text}</p>
         </div>
       </div>
-    </div>
-  `).join('');
-
-  // Lógica de abertura/fechamento
-  container.querySelectorAll('.accordion-trigger').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const item    = btn.closest('.accordion-item');
-      const body    = item.querySelector('.accordion-body');
-      const isOpen  = item.classList.contains('open');
-
-      // Fecha todos
-      container.querySelectorAll('.accordion-item').forEach(el => {
-        el.classList.remove('open');
-        el.querySelector('.accordion-trigger').setAttribute('aria-expanded', 'false');
-        el.querySelector('.accordion-body').style.maxHeight = '0';
-      });
-
-      // Abre o clicado (se estava fechado)
-      if (!isOpen) {
-        item.classList.add('open');
-        btn.setAttribute('aria-expanded', 'true');
-        body.style.maxHeight = body.scrollHeight + 'px';
-      }
-    });
+    `;
+    panelContainer.appendChild(panel);
   });
-}
 
-
-/* =====================================================
-   10. RENDERIZAÇÃO: Infográfico
-   ===================================================== */
-function renderInfografico() {
-  const el = document.getElementById('infographic');
-  if (!el) return;
-
-  el.innerHTML = data.infografico.map(step => `
-    <div class="infographic-step">
-      <p class="infographic-num">Etapa ${step.step}</p>
-      <span class="infographic-icon" aria-hidden="true">${step.icon}</span>
-      <h4 class="infographic-title">${step.title}</h4>
-      <p class="infographic-desc">${step.desc}</p>
-    </div>
-  `).join('');
-}
-
-
-/* =====================================================
-   11. RENDERIZAÇÃO: Abas do Autor
-   ===================================================== */
-function renderAutorTabs() {
-  const tablist = document.getElementById('autor-tablist');
-  const panels  = document.getElementById('autor-tab-panels');
-  if (!tablist || !panels) return;
-
-  // Renderiza botões de aba
-  tablist.innerHTML = data.autorTabs.map((tab, i) => `
-    <button class="tab-btn"
-            role="tab"
-            id="tab-${tab.id}"
-            aria-controls="panel-${tab.id}"
-            aria-selected="${i === 0 ? 'true' : 'false'}"
-            tabindex="${i === 0 ? '0' : '-1'}">
-      ${tab.label}
-    </button>
-  `).join('');
-
-  // Renderiza painéis
-  panels.innerHTML = data.autorTabs.map((tab, i) => `
-    <div class="tab-panel ${i === 0 ? 'active' : ''}"
-         role="tabpanel"
-         id="panel-${tab.id}"
-         aria-labelledby="tab-${tab.id}"
-         tabindex="0">
-      ${tab.content}
-    </div>
-  `).join('');
-
-  // Lógica de troca de aba
-  const buttons = tablist.querySelectorAll('.tab-btn');
-  const panelEls = panels.querySelectorAll('.tab-panel');
-
-  function activateTab(index) {
-    buttons.forEach((btn, i) => {
-      const active = i === index;
-      btn.setAttribute('aria-selected', String(active));
-      btn.tabIndex = active ? 0 : -1;
-    });
-    panelEls.forEach((panel, i) => {
-      panel.classList.toggle('active', i === index);
-    });
-  }
+  // Interatividade
+  const buttons = $$('.tab-btn', btnContainer);
 
   buttons.forEach((btn, i) => {
     btn.addEventListener('click', () => activateTab(i));
 
-    // Navegação por teclado (padrão ARIA Tabs)
-    btn.addEventListener('keydown', (e) => {
-      let newIndex = i;
-      if (e.key === 'ArrowRight') newIndex = (i + 1) % buttons.length;
-      if (e.key === 'ArrowLeft')  newIndex = (i - 1 + buttons.length) % buttons.length;
-      if (newIndex !== i) {
-        activateTab(newIndex);
-        buttons[newIndex].focus();
+    // Navegação por teclado (setas)
+    btn.addEventListener('keydown', e => {
+      let target = -1;
+      if (e.key === 'ArrowRight') target = (i + 1) % buttons.length;
+      if (e.key === 'ArrowLeft')  target = (i - 1 + buttons.length) % buttons.length;
+      if (target >= 0) { buttons[target].focus(); activateTab(target); }
+    });
+  });
+
+  function activateTab(index) {
+    buttons.forEach((b, i) => {
+      b.classList.toggle('active', i === index);
+      b.setAttribute('aria-selected', i === index ? 'true' : 'false');
+    });
+    $$('.tab-panel', panelContainer).forEach((p, i) => {
+      p.classList.toggle('active', i === index);
+    });
+  }
+})();
+
+/* ============================================================
+   10. CARROSSEL
+   ============================================================ */
+(function initCarousel() {
+  const track      = $('#carousel-track');
+  const dotsEl     = $('#carousel-dots');
+  const prevBtn    = $('#carousel-prev');
+  const nextBtn    = $('#carousel-next');
+  if (!track) return;
+
+  let current  = 0;
+  let autoTimer = null;
+  const VISIBLE = getVisibleCount(); // slides visíveis por vez
+
+  // Renderiza slides
+  CAROUSEL_DATA.forEach((slide, i) => {
+    const el = createElement('div', {
+      class: 'carousel__slide',
+      role:  'group',
+      'aria-label': `Slide ${i + 1} de ${CAROUSEL_DATA.length}: ${slide.title}`,
+      'aria-roledescription': 'slide',
+    });
+    el.innerHTML = `
+      <div class="carousel__img-wrap">
+        <div class="carousel__img-placeholder" style="background:${slide.bg}" role="img" aria-label="${slide.title}">
+          <span style="font-size:4rem" aria-hidden="true">${slide.icon}</span>
+          <span style="font-family:var(--font-display);color:#fff;font-size:1.2rem;font-weight:600;">${slide.title}</span>
+        </div>
+      </div>
+      <p class="carousel__caption">${slide.caption}</p>
+    `;
+    track.appendChild(el);
+  });
+
+  // Renderiza dots
+  CAROUSEL_DATA.forEach((_, i) => {
+    const dot = createElement('button', {
+      class: `carousel__dot${i === 0 ? ' active' : ''}`,
+      role:  'tab',
+      'aria-label': `Ir para slide ${i + 1}`,
+      'aria-selected': i === 0 ? 'true' : 'false',
+    });
+    dot.addEventListener('click', () => goTo(i));
+    dotsEl && dotsEl.appendChild(dot);
+  });
+
+  function getVisibleCount() {
+    return window.innerWidth >= 960 ? 3 : 1;
+  }
+
+  function goTo(index) {
+    const max = CAROUSEL_DATA.length - getVisibleCount();
+    current = Math.max(0, Math.min(index, max));
+    track.style.transform = `translateX(-${current * (100 / getVisibleCount())}%)`;
+    updateDots();
+    updateAriaLive();
+  }
+
+  function updateDots() {
+    const dots = $$('.carousel__dot', dotsEl);
+    dots.forEach((d, i) => {
+      const active = i === current;
+      d.classList.toggle('active', active);
+      d.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+  }
+
+  function updateAriaLive() {
+    const region = $('.carousel');
+    if (region) region.setAttribute('aria-label', `Carrossel – slide ${current + 1} de ${CAROUSEL_DATA.length}`);
+  }
+
+  function startAuto() {
+    stopAuto();
+    autoTimer = setInterval(() => goTo((current + 1) % CAROUSEL_DATA.length), 5000);
+  }
+
+  function stopAuto() {
+    clearInterval(autoTimer);
+  }
+
+  prevBtn && prevBtn.addEventListener('click', () => { goTo(current - 1); stopAuto(); });
+  nextBtn && nextBtn.addEventListener('click', () => { goTo(current + 1); stopAuto(); });
+
+  // Pausa no hover
+  const carousel = $('.carousel');
+  carousel && carousel.addEventListener('mouseenter', stopAuto);
+  carousel && carousel.addEventListener('mouseleave', startAuto);
+
+  // Swipe (touch)
+  let touchStartX = 0;
+  track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend',   e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) diff > 0 ? goTo(current + 1) : goTo(current - 1);
+    stopAuto();
+  });
+
+  // Responsividade
+  window.addEventListener('resize', () => goTo(current));
+
+  startAuto();
+})();
+
+/* ============================================================
+   11. ACORDEÃO – historia.html
+   ============================================================ */
+(function initAccordion() {
+  const container = $('#accordion-container');
+  if (!container) return;
+
+  ACCORDION_DATA.forEach((item, i) => {
+    const el = createElement('div', { class: 'accordion__item reveal', role: 'listitem' });
+    el.innerHTML = `
+      <button
+        class="accordion__trigger"
+        id="${item.id}-btn"
+        aria-expanded="${i === 0 ? 'true' : 'false'}"
+        aria-controls="${item.id}-panel"
+      >
+        ${item.title}
+        <em class="accordion__icon" aria-hidden="true">+</em>
+      </button>
+      <div
+        id="${item.id}-panel"
+        class="accordion__panel"
+        role="region"
+        aria-labelledby="${item.id}-btn"
+        aria-hidden="${i === 0 ? 'false' : 'true'}"
+      >
+        ${item.content}
+      </div>
+    `;
+    container.appendChild(el);
+  });
+
+  // Abre o primeiro por padrão
+  const firstPanel = container.querySelector('.accordion__panel');
+  if (firstPanel) firstPanel.style.display = 'block';
+
+  // Interatividade
+  $$('.accordion__trigger', container).forEach(btn => {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      const panelId  = btn.getAttribute('aria-controls');
+      const panel    = document.getElementById(panelId);
+
+      // Fecha todos (comportamento accordion)
+      $$('.accordion__trigger', container).forEach(b => {
+        b.setAttribute('aria-expanded', 'false');
+        const p = document.getElementById(b.getAttribute('aria-controls'));
+        if (p) { p.style.display = 'none'; p.setAttribute('aria-hidden', 'true'); }
+      });
+
+      // Abre o clicado (toggle)
+      if (!expanded) {
+        btn.setAttribute('aria-expanded', 'true');
+        if (panel) { panel.style.display = 'block'; panel.setAttribute('aria-hidden', 'false'); }
       }
     });
   });
-}
+})();
 
-
-/* =====================================================
-   12. RENDERIZAÇÃO: Referências
-   ===================================================== */
-function renderReferencias() {
-  const list = document.getElementById('references-list');
+/* ============================================================
+   12. TIMELINE – historia.html
+   ============================================================ */
+(function renderTimeline() {
+  const list = $('#timeline-list');
   if (!list) return;
 
-  list.innerHTML = data.referencias.map(ref => `
-    <li class="reference-item" role="listitem">
-      <strong>${ref.title}</strong>
-      ${ref.citation}
-    </li>
-  `).join('');
-}
-
-
-/* =====================================================
-   13. MINI JOGO — Quiz
-   ===================================================== */
-function initQuiz() {
-  const screenStart    = document.getElementById('game-start');
-  const screenQuestion = document.getElementById('game-question');
-  const screenResult   = document.getElementById('game-result');
-  const btnStart       = document.getElementById('btn-start-game');
-  const btnRestart     = document.getElementById('btn-restart-game');
-
-  const progressFill   = document.getElementById('progress-fill');
-  const progressText   = document.getElementById('progress-text');
-  const progressBar    = document.getElementById('progress-bar');
-  const questionNum    = document.getElementById('question-number');
-  const questionText   = document.getElementById('question-text');
-  const answersGrid    = document.getElementById('answers-grid');
-  const feedbackEl     = document.getElementById('question-feedback');
-
-  const resultScore    = document.getElementById('result-score');
-  const resultTitle    = document.getElementById('result-title');
-  const resultMessage  = document.getElementById('result-message');
-  const resultBadges   = document.getElementById('result-badges');
-
-  if (!screenStart) return;
-
-  // Estado do quiz
-  let state = {
-    questions: [],
-    current:   0,
-    score:     0,
-    answered:  false,
-  };
-
-  const LETTERS = ['A', 'B', 'C', 'D'];
-
-  /** Embaralha array (Fisher-Yates) */
-  function shuffle(arr) {
-    const a = [...arr];
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-  }
-
-  /** Mostra uma tela específica */
-  function showScreen(screen) {
-    [screenStart, screenQuestion, screenResult].forEach(s => {
-      s.classList.toggle('hidden', s !== screen);
+  TIMELINE_DATA.forEach((item, i) => {
+    const li = createElement('li', {
+      class: 'timeline__item',
+      style: `animation-delay:${i * 120}ms`,
     });
-  }
-
-  /** Inicia o quiz */
-  function startGame() {
-    state.questions = shuffle(data.quiz).slice(0, 8);
-    state.current   = 0;
-    state.score     = 0;
-    state.answered  = false;
-
-    showScreen(screenQuestion);
-    renderQuestion();
-  }
-
-  /** Renderiza a pergunta atual */
-  function renderQuestion() {
-    const q     = state.questions[state.current];
-    const total = state.questions.length;
-    const num   = state.current + 1;
-
-    // Progresso
-    const pct = ((num - 1) / total) * 100;
-    progressFill.style.width = pct + '%';
-    progressBar.setAttribute('aria-valuenow', num - 1);
-    progressText.textContent = `${num} / ${total}`;
-
-    questionNum.textContent  = `Pergunta ${num} de ${total}`;
-    questionText.textContent = q.question;
-
-    // Esconde feedback
-    feedbackEl.classList.add('hidden');
-    feedbackEl.classList.remove('wrong-feedback');
-
-    // Respostas
-    answersGrid.innerHTML = q.answers.map((ans, i) => `
-      <button class="answer-btn"
-              data-index="${i}"
-              aria-label="Opção ${LETTERS[i]}: ${ans}">
-        <span class="answer-letter" aria-hidden="true">${LETTERS[i]}</span>
-        <span>${ans}</span>
-      </button>
-    `).join('');
-
-    // Eventos de clique nas respostas
-    answersGrid.querySelectorAll('.answer-btn').forEach(btn => {
-      btn.addEventListener('click', () => handleAnswer(parseInt(btn.dataset.index)));
-    });
-
-    state.answered = false;
-  }
-
-  /** Processa a resposta do usuário */
-  function handleAnswer(selectedIndex) {
-    if (state.answered) return;
-    state.answered = true;
-
-    const q       = state.questions[state.current];
-    const correct = q.correct;
-    const isRight = selectedIndex === correct;
-
-    if (isRight) state.score += 10;
-
-    // Marca respostas visualmente
-    answersGrid.querySelectorAll('.answer-btn').forEach((btn, i) => {
-      btn.disabled = true;
-      if (i === correct)       btn.classList.add('correct');
-      if (i === selectedIndex && !isRight) btn.classList.add('wrong');
-    });
-
-    // Mostra feedback
-    feedbackEl.classList.remove('hidden');
-    feedbackEl.classList.toggle('wrong-feedback', !isRight);
-    feedbackEl.innerHTML = `
-      <strong>${isRight ? '✅ Correto!' : '❌ Incorreto.'}</strong>
-      ${q.explanation}
+    li.innerHTML = `
+      <time class="timeline__year" datetime="${item.year}">${item.year}</time>
+      <h3 class="timeline__title">${item.title}</h3>
+      <p class="timeline__text">${item.text}</p>
     `;
-
-    // Avança automaticamente após 2.5s
-    setTimeout(() => {
-      state.current++;
-      if (state.current < state.questions.length) {
-        renderQuestion();
-      } else {
-        showResult();
-      }
-    }, 2500);
-  }
-
-  /** Mostra o resultado final */
-  function showResult() {
-    const max   = state.questions.length * 10;
-    const pct   = (state.score / max) * 100;
-
-    showScreen(screenResult);
-
-    resultScore.textContent = `${state.score}/${max}`;
-
-    // Título e mensagem baseados na pontuação
-    let title, message, badges;
-
-    if (pct === 100) {
-      title   = '🏆 Especialista em Entre Rios!';
-      message = 'Parabéns! Você domina a história, cultura e sustentabilidade de Entre Rios. Um verdadeiro embaixador da colônia!';
-      badges  = ['Especialista', 'Nota Máxima', 'Mestre Suábio'];
-    } else if (pct >= 75) {
-      title   = '🌾 Agricultor Conhecedor!';
-      message = 'Excelente resultado! Você tem um sólido conhecimento sobre Entre Rios. Continue aprendendo!';
-      badges  = ['Bom Desempenho', 'Quase Expert'];
-    } else if (pct >= 50) {
-      title   = '🌱 Aprendiz da Terra!';
-      message = 'Bom começo! Com mais leitura sobre a história de Entre Rios, você chegará lá. Tente novamente!';
-      badges  = ['Em Progresso'];
-    } else {
-      title   = '📚 Continue Aprendendo!';
-      message = 'Não desanime! Explore as páginas de Apresentação e História para descobrir mais sobre Entre Rios.';
-      badges  = ['Explorador'];
-    }
-
-    resultTitle.textContent   = title;
-    resultMessage.textContent = message;
-    resultBadges.innerHTML    = badges.map(b => `
-      <span class="result-badge">${b}</span>
-    `).join('');
-
-    // Atualiza progress bar no resultado
-    progressFill.style.width = '100%';
-    progressBar.setAttribute('aria-valuenow', state.questions.length);
-  }
-
-  // Event listeners
-  btnStart.addEventListener('click', startGame);
-  btnRestart.addEventListener('click', startGame);
-}
-
-
-/* =====================================================
-   14. INIT — Inicializa tudo ao carregar o DOM
-   ===================================================== */
-document.addEventListener('DOMContentLoaded', () => {
-
-  // Acessibilidade
-  initFontControls();
-  initHighContrast();
-
-  // Navegação
-  initNav();
-
-  // Renderização de dados (ordem importa para o observer)
-  renderStats();
-  renderCarousel();
-  renderPilares();
-  renderTimeline();
-  renderAcordeao();
-  renderInfografico();
-  renderAutorTabs();
-  renderReferencias();
-
-  // Jogo
-  initQuiz();
-
-  // Scroll Reveal (depois de renderizar tudo)
-  // Pequeno delay para o DOM estar completamente pronto
-  requestAnimationFrame(() => {
-    initScrollReveal();
+    list.appendChild(li);
   });
+})();
 
-  console.log(
-    '%c🌾 Entre Rios · Tradição & Sustentabilidade',
-    'font-size:14px; color:#c9a96e; font-family: Georgia, serif; padding: 4px 0;'
-  );
-});
