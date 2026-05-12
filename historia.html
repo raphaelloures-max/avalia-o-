@@ -1,1 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sobre o Autor – projeto Entre Rios." />
+  <title>Sobre o Autor – Entre Rios</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <div class="a11y-bar" role="toolbar" aria-label="Ferramentas de acessibilidade">
+    <button class="a11y-btn" id="btn-font-dec" aria-label="Diminuir tamanho da fonte">A−</button>
+    <button class="a11y-btn" id="btn-font-inc" aria-label="Aumentar tamanho da fonte">A+</button>
+    <button class="a11y-btn" id="btn-contrast" aria-label="Alternar alto contraste">◐</button>
+  </div>
+
+  <header class="navbar" role="banner">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__logo" aria-label="Início – Entre Rios">
+        <span class="logo-mark" aria-hidden="true">❧</span>
+        <span class="logo-text">Entre Rios</span>
+      </a>
+      <button class="navbar__toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Abrir menu de navegação">
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+      </button>
+      <nav id="nav-menu" class="navbar__nav" role="navigation" aria-label="Navegação principal">
+        <ul class="nav__list" role="list">
+          <li><a href="index.html"    class="nav__link">Início</a></li>
+          <li><a href="historia.html" class="nav__link">História</a></li>
+          <li><a href="minijogo.html" class="nav__link">MiniJogo</a></li>
+          <li><a href="autor.html"    class="nav__link active" aria-current="page">Sobre o Autor</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <section class="page-hero page-hero--autor" aria-labelledby="autor-title">
+      <div class="hero__grain" aria-hidden="true"></div>
+      <div class="page-hero__content reveal">
+        <p class="hero__eyebrow">O projeto</p>
+        <h1 id="autor-title" class="hero__title hero__title--sm">Sobre o<br/><em>Autor</em></h1>
+      </div>
+    </section>
+
+    <section class="about section-pad" aria-labelledby="autor-about-title">
+      <div class="container grid-2col">
+        <div class="about__text reveal">
+          <span class="section-tag" aria-hidden="true">Quem escreveu</span>
+          <h2 id="autor-about-title" class="section-title">Um olhar apaixonado<br />pela região</h2>
+          <p>Este projeto foi desenvolvido com o objetivo de preservar e divulgar a rica história da comunidade de Entre Rios, localizada no município de Guarapuava, no interior do Paraná.</p>
+          <p>A pesquisa reúne dados históricos, depoimentos e informações sobre as práticas agrícolas sustentáveis que tornaram Entre Rios um exemplo nacional de desenvolvimento comunitário com identidade cultural.</p>
+          <p>O site foi construído com tecnologias web modernas, priorizando acessibilidade, design responsivo e experiência do usuário.</p>
+        </div>
+        <figure class="about__visual reveal" aria-label="Foto do autor">
+          <div class="about__img-frame">
+            <div class="img-placeholder img-placeholder--forest" role="img" aria-label="Avatar representativo do autor">
+              <span class="img-icon" aria-hidden="true">🧑‍💻</span>
+            </div>
+          </div>
+          <figcaption class="about__caption">Desenvolvedor · Guarapuava, PR</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Cards de habilidades / tecnologias usadas -->
+    <section class="sustentabilidade section-pad" aria-labelledby="tech-title">
+      <div class="container">
+        <span class="section-tag" aria-hidden="true">Stack</span>
+        <h2 id="tech-title" class="section-title section-title--center">Tecnologias utilizadas</h2>
+        <div class="cards-grid reveal" id="tech-cards" role="list">
+          <!-- Renderizado via JS -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <span class="logo-mark" aria-hidden="true">❧</span>
+        <span class="logo-text">Entre Rios</span>
+        <p class="footer__tagline">Tradição agrícola e sustentabilidade.</p>
+      </div>
+      <nav class="footer__nav" aria-label="Links do rodapé">
+        <ul role="list">
+          <li><a href="index.html">Início</a></li>
+          <li><a href="historia.html">História</a></li>
+          <li><a href="minijogo.html">MiniJogo</a></li>
+          <li><a href="autor.html">Sobre o Autor</a></li>
+        </ul>
+      </nav>
+      <p class="footer__copy">© 2025 Entre Rios · Guarapuava, PR</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
 
