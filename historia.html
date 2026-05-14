@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Sobre o Autor – projeto Entre Rios." />
-  <title>Sobre o Autor – Entre Rios</title>
+  <meta name="description" content="História de Entre Rios – Linha do tempo dos Suábios do Danúbio no Paraná." />
+  <title>História – Entre Rios</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -32,9 +32,9 @@
       <nav id="nav-menu" class="navbar__nav" role="navigation" aria-label="Navegação principal">
         <ul class="nav__list" role="list">
           <li><a href="index.html"    class="nav__link">Início</a></li>
-          <li><a href="historia.html" class="nav__link">História</a></li>
+          <li><a href="historia.html" class="nav__link active" aria-current="page">História</a></li>
           <li><a href="minijogo.html" class="nav__link">MiniJogo</a></li>
-          <li><a href="autor.html"    class="nav__link active" aria-current="page">Sobre o Autor</a></li>
+          <li><a href="autor.html"    class="nav__link">Sobre o Autor</a></li>
         </ul>
       </nav>
     </div>
@@ -42,40 +42,53 @@
 
   <main id="main-content">
 
-    <section class="page-hero page-hero--autor" aria-labelledby="autor-title">
+    <!-- PAGE HERO -->
+    <section class="page-hero page-hero--historia" aria-labelledby="page-hero-title">
       <div class="hero__grain" aria-hidden="true"></div>
       <div class="page-hero__content reveal">
-        <p class="hero__eyebrow">O projeto</p>
-        <h1 id="autor-title" class="hero__title hero__title--sm">Sobre o<br/><em>Autor</em></h1>
+        <p class="hero__eyebrow">1951 — presente</p>
+        <h1 id="page-hero-title" class="hero__title hero__title--sm">Uma jornada de<br/><em>raízes e colheitas</em></h1>
+        <p class="hero__subtitle">Da Europa devastada pela guerra às férteis terras do Paraná – a saga dos Suábios do Danúbio.</p>
       </div>
     </section>
 
-    <section class="about section-pad" aria-labelledby="autor-about-title">
+    <!-- INTRO -->
+    <section class="about section-pad reveal" aria-labelledby="hist-intro-title">
       <div class="container grid-2col">
-        <div class="about__text reveal">
-          <span class="section-tag" aria-hidden="true">Quem escreveu</span>
-          <h2 id="autor-about-title" class="section-title">Um olhar apaixonado<br />pela região</h2>
-          <p>Este projeto foi desenvolvido com o objetivo de preservar e divulgar a rica história da comunidade de Entre Rios, localizada no município de Guarapuava, no interior do Paraná.</p>
-          <p>A pesquisa reúne dados históricos, depoimentos e informações sobre as práticas agrícolas sustentáveis que tornaram Entre Rios um exemplo nacional de desenvolvimento comunitário com identidade cultural.</p>
-          <p>O site foi construído com tecnologias web modernas, priorizando acessibilidade, design responsivo e experiência do usuário.</p>
+        <div class="about__text">
+          <span class="section-tag" aria-hidden="true">A Origem</span>
+          <h2 id="hist-intro-title" class="section-title">Os Suábios<br />do Danúbio</h2>
+          <p>Os Suábios do Danúbio eram descendentes de colonizadores alemães que, nos séculos XVII e XVIII, se estabeleceram nas margens do rio Danúbio, no sudeste da Europa. Eram agricultores habilidosos, conhecidos por transformar terras inóspitas em campos produtivos.</p>
+          <p>Após a Segunda Guerra Mundial, cerca de 15 milhões de alemães étnicos foram expulsos de seus lares. Parte desse grupo encontrou refúgio no Brasil, trazendo consigo sementes, ferramentas e um espírito coletivo inabalável.</p>
         </div>
-        <figure class="about__visual reveal" aria-label="Foto do autor">
+        <figure class="about__visual" aria-label="Chegada dos imigrantes suábios ao Paraná">
           <div class="about__img-frame">
-            <div class="img-placeholder img-placeholder--forest" role="img" aria-label="Avatar representativo do autor">
-              <span class="img-icon" aria-hidden="true">🧑‍💻</span>
+            <div class="img-placeholder img-placeholder--earth" role="img" aria-label="Ilustração de imigrantes chegando com seus pertences">
+              <span class="img-icon" aria-hidden="true">🛶</span>
             </div>
           </div>
-          <figcaption class="about__caption">Desenvolvedor · Guarapuava, PR</figcaption>
+          <figcaption class="about__caption">Chegada ao porto de Santos · 1951</figcaption>
         </figure>
       </div>
     </section>
 
-    <!-- Cards de habilidades / tecnologias usadas -->
-    <section class="sustentabilidade section-pad" aria-labelledby="tech-title">
+    <!-- TIMELINE -->
+    <section class="timeline-section section-pad" aria-labelledby="timeline-title">
       <div class="container">
-        <span class="section-tag" aria-hidden="true">Stack</span>
-        <h2 id="tech-title" class="section-title section-title--center">Tecnologias utilizadas</h2>
-        <div class="cards-grid reveal" id="tech-cards" role="list">
+        <span class="section-tag" aria-hidden="true">Linha do Tempo</span>
+        <h2 id="timeline-title" class="section-title section-title--center">Marcos históricos</h2>
+        <ol class="timeline" id="timeline-list" aria-label="Linha do tempo de Entre Rios">
+          <!-- Renderizado via JS -->
+        </ol>
+      </div>
+    </section>
+
+    <!-- ACORDEÃO – Aspectos culturais -->
+    <section class="accordion-section section-pad" aria-labelledby="accordion-title">
+      <div class="container container--narrow">
+        <span class="section-tag" aria-hidden="true">Cultura</span>
+        <h2 id="accordion-title" class="section-title section-title--center">Patrimônio vivo</h2>
+        <div class="accordion reveal" id="accordion-container" role="list">
           <!-- Renderizado via JS -->
         </div>
       </div>
