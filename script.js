@@ -630,4 +630,3 @@ const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
     list.appendChild(li);
   });
 })();
-
